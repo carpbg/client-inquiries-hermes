@@ -1,0 +1,1 @@
+ALTER TABLE `employees` ADD `access_role` text DEFAULT 'user' NOT NULL;

@@ -1,0 +1,1 @@
+ALTER TABLE `documents` ADD `note` text DEFAULT '' NOT NULL;
