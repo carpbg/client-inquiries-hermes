@@ -46,7 +46,10 @@ async function signature(payload: string) {
   );
 }
 
-export async function createSessionCookie(user: Omit<AppUser, "exp">) {
+export async function createSessionCookie(
+  user: Omit<AppUser, "exp">,
+  secure = true,
+) {
   const payload = bytesToBase64Url(
     new TextEncoder().encode(
       JSON.stringify({
@@ -55,11 +58,13 @@ export async function createSessionCookie(user: Omit<AppUser, "exp">) {
       }),
     ),
   );
-  return `${COOKIE_NAME}=${payload}.${await signature(payload)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_SECONDS}`;
+  const secureAttribute = secure ? "; Secure" : "";
+  return `${COOKIE_NAME}=${payload}.${await signature(payload)}; Path=/; HttpOnly${secureAttribute}; SameSite=Lax; Max-Age=${SESSION_SECONDS}`;
 }
 
-export function clearSessionCookie() {
-  return `${COOKIE_NAME}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`;
+export function clearSessionCookie(secure = true) {
+  const secureAttribute = secure ? "; Secure" : "";
+  return `${COOKIE_NAME}=; Path=/; HttpOnly${secureAttribute}; SameSite=Lax; Max-Age=0`;
 }
 
 export async function getSession(request: Request): Promise<AppUser | null> {
