@@ -33,6 +33,19 @@ export async function POST(request: Request) {
       : employee.accessRole;
   return Response.json(
     { user: { id: employee.id, email: employee.email, name, accessRole, notificationsEnabled: employee.notificationsEnabled } },
-    { headers: { "Set-Cookie": await createSessionCookie({ id: employee.id, email: employee.email, name, accessRole, notificationsEnabled: employee.notificationsEnabled }) } },
+    {
+      headers: {
+        "Set-Cookie": await createSessionCookie(
+          {
+            id: employee.id,
+            email: employee.email,
+            name,
+            accessRole,
+            notificationsEnabled: employee.notificationsEnabled,
+          },
+          new URL(request.url).protocol === "https:",
+        ),
+      },
+    },
   );
 }
