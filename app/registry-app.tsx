@@ -1156,16 +1156,6 @@ export function RegistryApp({
   );
 }
 
-type ReportCriteria = {
-  client?: string;
-  status?: string;
-  requestType?: string;
-  analyst?: string;
-  pm?: string;
-  from?: string;
-  to?: string;
-  days?: string;
-};
 const reportCards = [
   [
     "all",
