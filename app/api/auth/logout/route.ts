@@ -1,8 +1,14 @@
 import { clearSessionCookie } from "../../../../lib/auth";
 
-export async function POST() {
+export async function POST(request: Request) {
   return Response.json(
     { ok: true },
-    { headers: { "Set-Cookie": clearSessionCookie() } },
+    {
+      headers: {
+        "Set-Cookie": clearSessionCookie(
+          new URL(request.url).protocol === "https:",
+        ),
+      },
+    },
   );
 }
